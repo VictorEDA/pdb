@@ -77,6 +77,11 @@ public class Helper {
      */
     private static final String NOT_EMPTY = "' should not be empty.";
 
+    /**
+     * The maximum size, in bytes, of access token.
+     */
+    public static final int ACCESS_TOKEN_MAX_SIZE = 255;
+
     static {
         DEFAULT_OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         DEFAULT_OBJECT_MAPPER.setDateFormat(DEFAULT_DATE_FORMAT);

@@ -7,6 +7,7 @@
 
   <modules>
     <module>common</module>
+    <module>db</module>
     <module>user-mgmt</module>
     <module>server</module>
   </modules>
@@ -103,12 +104,23 @@
         <configuration>
           <skipTests>${skip.surefire.tests}</skipTests>
           <excludes>
-            <exclude>**/*IntegrationTest.java</exclude>
+            <exclude>**/*IT.java</exclude>
           </excludes>
         </configuration>
       </plugin>
     </plugins>
 
   </build>
+
+  <repositories>
+      <repository>
+          <id>spring-milestones</id>
+          <name>Spring Milestones</name>
+          <url>http://repo.spring.io/milestone</url>
+          <snapshots>
+              <enabled>false</enabled>
+          </snapshots>
+      </repository>
+  </repositories>
 
 </project>
