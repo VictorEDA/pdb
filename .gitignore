@@ -1,3 +1,9 @@
+# Eclipse files to ignore
+.project
+.classpath
+.settings/
+
+# Maven files to ignore
 target/
 pom.xml.tag
 pom.xml.releaseBackup
