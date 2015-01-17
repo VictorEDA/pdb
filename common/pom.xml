@@ -5,15 +5,7 @@
     <artifactId>pdb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>pdb.user-mgmt</artifactId>
+  <artifactId>pdb.common</artifactId>
   <packaging>jar</packaging>
-
-  <dependencies>
-    <dependency>
-        <groupId>pdb</groupId>
-        <artifactId>pdb.common</artifactId>
-        <version>${project.version}</version>
-    </dependency>
-  </dependencies>
 
 </project>
