@@ -24,7 +24,7 @@
 `mvn test`
 
 ## Deploy
-`mvn install -DskipTests`
+`mvn install -DskipTests`<br>
 `mvn -pl server tomcat7:run -DskipTests`
 
 This runs embedded Tomcat server on port 8080.
