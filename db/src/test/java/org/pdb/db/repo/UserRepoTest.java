@@ -105,11 +105,24 @@ public class UserRepoTest {
         repo.save(user);
 
         User found = repo.findOne(id().with("userId", userId).with("groupId", groupId));
-        assertNotNull(found);
+        checkUser(found, userId, groupId, accessToken);
 
-        assertEquals(userId, found.getUserId());
-        assertEquals(groupId, found.getGroupId());
-        assertEquals(accessToken, found.getAccessToken());
+        User found2 = repo.findOne(id().with("userId", userId));
+        checkUser(found2, userId, groupId, accessToken);
+    }
+
+    /**
+     * Check to make sure user is correct.
+     * @param user The user to check.
+     * @param userId Expected userId.
+     * @param groupId Expected groupId.
+     * @param accessToken Expected accessToken.
+     */
+    private void checkUser(User user, String userId, String groupId, String accessToken) {
+        assertNotNull(user);
+        assertEquals(userId, user.getUserId());
+        assertEquals(groupId, user.getGroupId());
+        assertEquals(accessToken, user.getAccessToken());
     }
 
     public void deleteAllEntities() {

@@ -57,6 +57,15 @@ public class User {
     }
 
     /**
+     * Constructor.
+     */
+    public User(String userId, String groupId, String accessToken) {
+        this.userId = userId;
+        this.groupId = groupId;
+        this.accessToken = accessToken;
+    }
+
+    /**
      * Retrieves the 'userId' variable.
      * @return the 'userId' variable value
      */
