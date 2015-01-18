@@ -105,10 +105,10 @@ partitioner: org.apache.cassandra.dht.Murmur3Partitioner
 # will spread data evenly across them, subject to the granularity of
 # the configured compaction strategy.
 data_file_directories:
-    - target/embeddedCassandra/data
+    - ${build.cassandra.location}/data
 
 # commit log
-commitlog_directory: target/embeddedCassandra/commitlog
+commitlog_directory: ${build.cassandra.location}/commitlog
 
 # policy for data disk failures:
 # stop: shut down gossip and Thrift, leaving the node effectively dead, but
@@ -170,7 +170,7 @@ row_cache_save_period: 0
 # row_cache_keys_to_save: 100
 
 # saved caches
-saved_caches_directory: target/embeddedCassandra/saved_caches
+saved_caches_directory: ${build.cassandra.location}/saved_caches
 
 # commitlog_sync may be either "periodic" or "batch."
 # When in batch mode, Cassandra won't ack writes until the commit log
@@ -248,7 +248,7 @@ concurrent_writes: 32
 # the number of full memtables to allow pending flush, that is,
 # waiting for a writer thread.  At a minimum, this should be set to
 # the maximum number of secondary indexes created on a single CF.
-# memtable_flush_queue_size: 4
+memtable_flush_queue_size: 4
 
 # Whether to, when doing sequential writing, fsync() at intervals in
 # order to force the operating system to flush the dirty
@@ -259,11 +259,11 @@ trickle_fsync: false
 trickle_fsync_interval_in_kb: 10240
 
 # TCP port, for commands and data
-storage_port: 7010 # ${build.cassandra.storage_port}
+storage_port: ${build.cassandra.storage_port}
 
 # SSL port, for encrypted communication.  Unused unless enabled in
 # encryption_options
-ssl_storage_port: 7011 # ${build.cassandra.ssl_storage_port}
+ssl_storage_port: ${build.cassandra.ssl_storage_port}
 
 # Address to bind to and tell other Cassandra nodes to connect to. You
 # _must_ change this if you want multiple nodes to be able to
@@ -290,7 +290,7 @@ listen_address: localhost
 # same as the rpc_address. The port however is different and specified below.
 start_native_transport: true
 # port for the CQL native transport to listen for clients on
-native_transport_port: 9142 # ${build.cassandra.native_transport_port}
+native_transport_port: ${build.cassandra.native_transport_port}
 # The minimum and maximum threads for handling requests when the native
 # transport is used. They are similar to rpc_min_threads and rpc_max_threads,
 # though the defaults differ slightly.
@@ -308,7 +308,7 @@ start_rpc: true
 # (i.e. it will be based on the configured hostname of the node).
 rpc_address: localhost
 # port for Thrift to listen for clients on
-rpc_port: 9175 # ${build.cassandra.rpc_port}
+rpc_port: ${build.cassandra.rpc_port}
 
 # enable or disable keepalive on rpc connections
 rpc_keepalive: true
@@ -398,7 +398,7 @@ column_index_size_in_kb: 64
 # Size limit for rows being compacted in memory.  Larger rows will spill
 # over to disk and use a slower two-pass compaction process.  A message
 # will be logged specifying the row key.
-# in_memory_compaction_limit_in_mb: 64
+in_memory_compaction_limit_in_mb: 64
 
 # Number of simultaneous compactions to allow, NOT including
 # validation "compactions" for anti-entropy repair.  Simultaneous
@@ -418,7 +418,7 @@ column_index_size_in_kb: 64
 # This is usually only useful for SSD-based hardware: otherwise,
 # your concern is usually to get compaction to do LESS i/o (see:
 # compaction_throughput_mb_per_sec), not more.
-# multithreaded_compaction: false
+multithreaded_compaction: false
 
 # Throttles compaction to the given total throughput across the entire
 # system. The faster you insert data, the faster you need to compact in
@@ -431,7 +431,7 @@ compaction_throughput_mb_per_sec: 16
 # Track cached row keys during compaction, and re-cache their new
 # positions in the compacted sstable.  Disable if you use really large
 # key caches.
-# compaction_preheat_key_cache: true
+compaction_preheat_key_cache: true
 
 # Throttles all outbound streaming file transfers on this node to the
 # given total throughput in Mbps. This is necessary because Cassandra does

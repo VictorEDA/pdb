@@ -32,22 +32,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Unit tests for UserRepo.
  */
-// @RunWith(SpringJUnit4ClassRunner.class)
-// @ContextConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
 public class UserRepoTest {
 
-    @Test
-    public void bozo() {
-    }
-
-    /*
     protected static String CASSANDRA_CONFIG = "spring-cassandra.yaml";
 
     @Configuration
     @EnableCassandraRepositories(basePackageClasses = UserRepo.class)
     public static class Config extends AbstractCassandraConfiguration {
 
+        public static final SpringCassandraBuildProperties PROPS = new SpringCassandraBuildProperties();
+        public static final int PORT = PROPS.getCassandraPort();
+
         public String keyspaceName = "ks" + UUID.randomUUID().toString().replace("-", "");
+
+        @Override
+        protected int getPort() {
+            return PORT;
+        }
 
         @Override
         public SchemaAction getSchemaAction() {
@@ -116,5 +119,4 @@ public class UserRepoTest {
             template.truncate(entity.getTableName());
         }
     }
-    */
 }

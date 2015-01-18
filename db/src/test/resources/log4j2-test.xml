@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="60">
+    <loggers>
+        <root level="INFO">
+            <appender-ref ref="Console" />
+        </root>
+        <logger name="org.apache.cassandra" level="WARN" additivity="false">
+            <appender-ref ref="Console" />
+        </logger>
+        <logger name="org.springframework" level="WARN" additivity="false">
+            <appender-ref ref="Console" />
+        </logger>
+        <logger name="org.springframework.cassandra" level="DEBUG" additivity="false">
+            <appender-ref ref="Console" />
+        </logger>
+        <logger name="org.springframework.data.cassandra" level="DEBUG" additivity="false">
+            <appender-ref ref="Console" />
+        </logger>
+    </loggers>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS z} [%t] %-5level %logger{36} - %.10000msg%n" />
+        </Console>
+    </appenders>
+</configuration>
