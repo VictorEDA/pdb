@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     @NotNull
     @NotEmpty
     @Size(max = Group.GROUP_ID_MAX_SIZE)
-    @PrimaryKeyColumn(ordinal = 1)
+    @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED)
     private String groupId;
 
     /**

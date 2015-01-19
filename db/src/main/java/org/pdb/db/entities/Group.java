@@ -1,6 +1,7 @@
 package org.pdb.db.entities;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -8,7 +9,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.pdb.common.Helper;
-import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.mapping.Table;
 
 /**
@@ -28,13 +30,13 @@ public class Group extends BaseEntity {
     @NotNull
     @NotEmpty
     @Size(max = GROUP_ID_MAX_SIZE)
-    @PrimaryKey
+    @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private String groupId;
 
     /**
      * The user ids belonging to this group.
      */
-    private List<String> userIds;
+    private Set<String> userIds;
 
     /**
      * The access token for the group.
@@ -98,7 +100,10 @@ public class Group extends BaseEntity {
      * Retrieves the 'userIds' variable.
      * @return the 'userIds' variable value
      */
-    public List<String> getUserIds() {
+    public Set<String> getUserIds() {
+        if (userIds == null) {
+            userIds = new HashSet<String>();
+        }
         return userIds;
     }
 
@@ -106,7 +111,7 @@ public class Group extends BaseEntity {
      * Sets the 'userIds' variable.
      * @param userIds the new 'userIds' variable value to set
      */
-    public void setUserIds(List<String> userIds) {
+    public void setUserIds(Set<String> userIds) {
         this.userIds = userIds;
     }
 

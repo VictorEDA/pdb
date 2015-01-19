@@ -132,9 +132,6 @@
         <version>2.18.1</version>
         <configuration>
           <skipTests>${skip.surefire.tests}</skipTests>
-          <excludes>
-            <exclude>**/*IT.java</exclude>
-          </excludes>
         </configuration>
       </plugin>
     </plugins>
