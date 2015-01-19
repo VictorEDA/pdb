@@ -1,46 +1,43 @@
 package org.pdb.db.entities;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.pdb.common.Helper;
-import org.springframework.cassandra.core.PrimaryKeyType;
-import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
 /**
- * The user.
+ * The group, which contains one or more users.
  */
 @Table
-public class User extends BaseEntity {
+public class Group extends BaseEntity {
 
     /**
-     * The maximum size, in bytes, of user id.
+     * The maximum size, in bytes, of group id.
      */
-    public static final int USER_ID_MAX_SIZE = 255;
-
-    /**
-     * The organization name.
-     */
-    @NotNull
-    @NotEmpty
-    @Size(max = USER_ID_MAX_SIZE)
-    @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED)
-    private String userId;
+    public static final int GROUP_ID_MAX_SIZE = 255;
 
     /**
      * The group that this user belongs to.
      */
     @NotNull
     @NotEmpty
-    @Size(max = Group.GROUP_ID_MAX_SIZE)
-    @PrimaryKeyColumn(ordinal = 1)
+    @Size(max = GROUP_ID_MAX_SIZE)
+    @PrimaryKey
     private String groupId;
 
     /**
-     * The access token for the user.
+     * The user ids belonging to this group.
+     */
+    private List<String> userIds;
+
+    /**
+     * The access token for the group.
      * <p>
      * TODO: Encrypt access token in DB.
      */
@@ -53,33 +50,16 @@ public class User extends BaseEntity {
     /**
      * Default constructor.
      */
-    public User() {
+    public Group() {
         // empty
     }
 
     /**
      * Constructor.
      */
-    public User(String userId, String groupId, String accessToken) {
-        this.userId = userId;
+    public Group(String groupId, String accessToken) {
         this.groupId = groupId;
         this.accessToken = accessToken;
-    }
-
-    /**
-     * Retrieves the 'userId' variable.
-     * @return the 'userId' variable value
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * Sets the 'userId' variable.
-     * @param userId the new 'userId' variable value to set
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     /**
@@ -112,6 +92,22 @@ public class User extends BaseEntity {
      */
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    /**
+     * Retrieves the 'userIds' variable.
+     * @return the 'userIds' variable value
+     */
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    /**
+     * Sets the 'userIds' variable.
+     * @param userIds the new 'userIds' variable value to set
+     */
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 
 }

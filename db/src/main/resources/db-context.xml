@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cass="http://www.springframework.org/schema/data/cassandra"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/data/cassandra http://www.springframework.org/schema/data/cassandra/spring-cassandra-1.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+  <bean name="randomKeyspaceName" class="java.lang.String">
+    <constructor-arg
+      value="#{'ks' + T(java.util.UUID).randomUUID().toString().replaceAll('-', '')}" />
+  </bean>
+
+  <context:property-placeholder location="classpath:/spring-cassandra.properties" />
+
+  <bean name="cassandra" class="org.pdb.db.init.CassandraInitiator"></bean>
+
+  <cass:cluster port="${build.cassandra.native_transport_port}">
+    <cass:keyspace name="#{randomKeyspaceName}" action="CREATE"
+      durable-writes="true">
+    </cass:keyspace>
+  </cass:cluster>
+
+  <cass:converter />
+  <cass:session keyspace-name="#{randomKeyspaceName}"
+    schema-action="RECREATE" />
+
+  <cass:template />
+  <cass:mapping entity-base-packages="org.pdb.db.entities" />
+
+  <cass:repositories base-package="org.pdb.db.repo" />
+
+</beans>

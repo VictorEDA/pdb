@@ -1,7 +1,9 @@
 package org.pdb.config;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 import org.pdb.user.rest.HelloResource;
+import org.pdb.user.rest.UserResource;
 
 /**
  * Configuration for REST resources.
@@ -14,6 +16,14 @@ public class RestConfig extends ResourceConfig {
     public RestConfig() {
         // REST endpoints
         register(HelloResource.class);
+        register(UserResource.class);
+
+        // JSON mapper
+        register(ObjectMapperProvider.class);
+
+        // Exception mappers
+        property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
+        register(AppExceptionMapper.class);
 
     }
 

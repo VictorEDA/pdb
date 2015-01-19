@@ -7,16 +7,19 @@ import static org.springframework.data.cassandra.repository.support.BasicMapId.i
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.apache.cassandra.exceptions.ConfigurationException;
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.pdb.common.BaseTest;
 import org.pdb.db.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cassandra.core.keyspace.CreateKeyspaceSpecification;
@@ -34,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class UserRepoTest {
+public class UserRepoTest extends BaseTest {
 
     protected static String CASSANDRA_CONFIG = "spring-cassandra.yaml";
 
@@ -109,6 +112,18 @@ public class UserRepoTest {
 
         User found2 = repo.findOne(id().with("userId", userId));
         checkUser(found2, userId, groupId, accessToken);
+    }
+
+    @Test
+    public void testFindAll() {
+        repo.save(new User("user1", "group1", "token1"));
+        repo.save(new User("user2", "group2", "token2"));
+        repo.save(new User("user3", "group1", "token3"));
+
+        Iterable<User> iterable = repo.findAll();
+        assertNotNull(iterable);
+        Collection<User> users = IteratorUtils.toList(iterable.iterator());
+        assertEquals(3, users.size());
     }
 
     /**

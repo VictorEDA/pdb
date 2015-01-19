@@ -14,6 +14,11 @@
         <artifactId>pdb.common</artifactId>
         <version>${project.version}</version>
     </dependency>
+    <dependency>
+        <groupId>pdb</groupId>
+        <artifactId>pdb.db</artifactId>
+        <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
