@@ -9,6 +9,7 @@
     <module>common</module>
     <module>db</module>
     <module>user-mgmt</module>
+    <module>pipes</module>
     <module>server</module>
   </modules>
 

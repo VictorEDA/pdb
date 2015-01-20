@@ -19,4 +19,5 @@
   <context:annotation-config />
 
   <import resource="classpath:/db-context.xml" />
+  <import resource="classpath:/pipe-context.xml" />
 </beans>

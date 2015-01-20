@@ -26,6 +26,11 @@
         <artifactId>pdb.user-mgmt</artifactId>
         <version>${project.version}</version>
     </dependency>
+    <dependency>
+        <groupId>pdb</groupId>
+        <artifactId>pdb.pipes.base</artifactId>
+        <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <profiles>

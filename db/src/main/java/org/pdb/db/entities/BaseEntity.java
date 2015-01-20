@@ -28,7 +28,8 @@ public abstract class BaseEntity {
      * Default constructor.
      */
     protected BaseEntity() {
-        // empty
+        createdAt = new Date();
+        updatedAt = createdAt;
     }
 
     /**

@@ -2,6 +2,7 @@ package org.pdb.config;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.pdb.pipes.rest.PipesResource;
 import org.pdb.user.rest.HelloResource;
 import org.pdb.user.rest.UserResource;
 
@@ -17,6 +18,7 @@ public class RestConfig extends ResourceConfig {
         // REST endpoints
         register(HelloResource.class);
         register(UserResource.class);
+        register(PipesResource.class);
 
         // JSON mapper
         register(ObjectMapperProvider.class);

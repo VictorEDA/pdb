@@ -110,8 +110,6 @@ public class UserResource {
                 Group group = new Group();
                 group.setGroupId(json.groupId);
                 group.setAccessToken(RandomStringUtils.randomAlphanumeric(32));
-                group.setCreatedAt(new Date());
-                group.setUpdatedAt(new Date());
                 groupRepo.save(group);
                 response = Response.status(Status.CREATED).entity(group).build();
             }
@@ -203,8 +201,6 @@ public class UserResource {
                     user.setUserId(json.userId);
                     user.setGroupId(groupId);
                     user.setAccessToken(RandomStringUtils.randomAlphanumeric(32));
-                    user.setCreatedAt(new Date());
-                    user.setUpdatedAt(new Date());
                     userRepo.save(user);
                     // Create a new copy of user ids set so it can be modified.
                     group.setUserIds(new HashSet<>(group.getUserIds()));
