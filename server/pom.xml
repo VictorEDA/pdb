@@ -31,6 +31,11 @@
         <artifactId>pdb.pipes.base</artifactId>
         <version>${project.version}</version>
     </dependency>
+    <dependency>
+        <groupId>pdb</groupId>
+        <artifactId>pdb.pipes.moves</artifactId>
+        <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <profiles>

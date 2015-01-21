@@ -11,7 +11,10 @@
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
 ">
 
+  <bean id="restClient" class="org.pdb.pipes.RestClient"/>
+
   <util:list id="pipeServices">
+    <bean class="org.pdb.pipes.moves.MovesService"/>
   </util:list>
 
 </beans>

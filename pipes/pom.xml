@@ -10,6 +10,7 @@
 
   <modules>
     <module>base</module>
+    <module>moves</module>
   </modules>
 
   <dependencies>

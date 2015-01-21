@@ -11,6 +11,8 @@ public interface PipeService {
 
     String getId();
 
-    URI getSyncUri(HttpServletRequest request);
+    URI getSyncUri(String callbackPath);
+
+    void completeSync(HttpServletRequest request, String originalCallbackPath) throws PipeServiceException;
 
 }

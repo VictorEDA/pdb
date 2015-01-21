@@ -1,4 +1,4 @@
-package org.pdb.config;
+package org.pdb.common.rest;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;

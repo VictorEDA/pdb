@@ -16,11 +16,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.pdb.common.AppConfigurationException;
@@ -134,23 +137,24 @@ public class PipesResource {
     @GET
     @Path("/pipes/{pipe}/sync")
     @Produces("application/json")
-    public Response syncPipe(@PathParam("pipe") String pipe, @Context HttpServletRequest request) {
+    public Response syncPipe(@PathParam("pipe") String pipe, @QueryParam("redirect_uri") String redirect,
+            @Context HttpServletRequest request) {
         final String methodName = "syncPipe";
 
-        Helper.logEntrance(LOGGER, methodName, "pipe", pipe);
+        Helper.logEntrance(LOGGER, methodName, "pipe", pipe, "redirect", redirect, "request", request);
         Response response = null;
 
         try {
-            // Get pipe's authorization
-            PipeAppAuthorization config = pipeAppAuthorizationRepo.findOne(BasicMapId.id().with("id", pipe));
-            if (config == null) {
+            if (pipes.get(pipe) == null) {
                 response = Response.status(Status.NOT_FOUND).entity(new ErrorJson("error", "Not found.")).build();
             } else {
-                String path = String.format(
-                        "https://api.moves-app.com/oauth/v1/authorize?response_type=code&client_id=%s&scope=activity%%20location&redirect_uri=%s",
-                        config.getClientId(), "http://localhost:8080/api/pipes/moves/callback");
-                // Get the sync endpoint from the proper pipe
-                response = Response.temporaryRedirect(URI.create(path)).build();
+                URI syncPath = pipes.get(pipe).getSyncUri(getCallbackPath(pipe, redirect, request));
+                if (syncPath == null) {
+                    response = Response.status(Status.BAD_REQUEST)
+                            .entity(new ErrorJson("error", "Is pipe configured?")).build();
+                } else {
+                    response = Response.temporaryRedirect(syncPath).build();
+                }
             }
         } catch (Exception e) {
             Helper.logException(LOGGER, methodName, e);
@@ -161,16 +165,31 @@ public class PipesResource {
         return Helper.logExit(LOGGER, methodName, response);
     }
 
-    @GET
-    @Path("/pipes/{pipe}/callback")
-    public Response getPipeCallback(@PathParam("pipe") String pipe) {
-        return pipeCallback(pipe);
-    }
+    /**
+     * Create a callback URL path for authentication.
+     * @param pipe The pipe.
+     * @param redirect The redirect URI (optional).
+     * @param request The http request.
+     * @return the callback path
+     */
+    private String getCallbackPath(String pipe, String redirect, HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(request.getScheme()).append("://").append(request.getServerName());
+        int port = request.getServerPort();
+        if ((request.getScheme().equals("http") && port != 80)
+                || (request.getScheme().equals("https") && port != 443)) {
+            sb.append(':').append(port);
+        }
+        sb.append(request.getContextPath());
+        sb.append("/api/pipes/");
+        sb.append(pipe);
+        sb.append("/callback");
+        if (!StringUtils.isBlank(redirect)) {
+            sb.append(StringEscapeUtils.escapeHtml4("?redirect_uri=" + redirect));
+        }
 
-    @POST
-    @Path("/pipes/{pipe}/callback")
-    public Response postPipeCallback(@PathParam("pipe") String pipe) {
-        return pipeCallback(pipe);
+        return sb.toString();
+
     }
 
     /**
@@ -182,10 +201,13 @@ public class PipesResource {
      *         404 if pipe not found <br>
      *         500 if server error
      */
-    public Response pipeCallback(@PathParam("pipe") String pipe) {
+    @GET
+    @Path("/pipes/{pipe}/callback")
+    public Response pipeCallback(@PathParam("pipe") String pipe, @QueryParam("redirect_uri") String redirect,
+            @Context HttpServletRequest request) {
         final String methodName = "pipeCallback";
 
-        Helper.logEntrance(LOGGER, methodName, "pipe", pipe);
+        Helper.logEntrance(LOGGER, methodName, "pipe", pipe, "redirect", redirect, "request", request);
         Response response = null;
 
         response = Response.ok().build();

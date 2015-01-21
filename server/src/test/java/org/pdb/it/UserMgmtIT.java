@@ -27,7 +27,7 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pdb.common.BaseTest;
-import org.pdb.config.ObjectMapperProvider;
+import org.pdb.common.rest.ObjectMapperProvider;
 import org.pdb.db.entities.Group;
 import org.pdb.db.entities.User;
 
